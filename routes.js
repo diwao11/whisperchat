@@ -49,7 +49,7 @@ module.exports = function(app,io){
 				socket.emit('peopleinchat', {
 					number: 1,
 					user: chat.clients(data)[0].username,
-					avatar: chat.clients(data)[0].avatar,
+					// avatar: chat.clients(data)[0].avatar,
 					id: data
 				});
 			}
@@ -71,10 +71,10 @@ module.exports = function(app,io){
 
 				socket.username = data.user;
 				socket.room = data.id;
-				socket.avatar = gravatar.url(data.avatar, {s: '140', r: 'x', d: 'mm'});
+				// socket.avatar = gravatar.url(data.avatar, {s: '140', r: 'x', d: 'mm'});
 
 				// Tell the person what he should use for an avatar
-				socket.emit('img', socket.avatar);
+				// socket.emit('img', socket.avatar);
 
 
 				// Add the client to the room
@@ -82,14 +82,14 @@ module.exports = function(app,io){
 
 				if(chat.clients(data.id).length == 2) {
 
-					var usernames = [],
-						avatars = [];
+					var usernames = [];
+						// avatars = [];
 
 					usernames.push(chat.clients(data.id)[0].username);
 					usernames.push(chat.clients(data.id)[1].username);
 
-					avatars.push(chat.clients(data.id)[0].avatar);
-					avatars.push(chat.clients(data.id)[1].avatar);
+					// avatars.push(chat.clients(data.id)[0].avatar);
+					// avatars.push(chat.clients(data.id)[1].avatar);
 
 					// Send the startChat event to all the people in the
 					// room, along with a list of people that are in it.
@@ -97,8 +97,8 @@ module.exports = function(app,io){
 					chat.in(data.id).emit('startChat', {
 						boolean: true,
 						id: data.id,
-						users: usernames,
-						avatars: avatars
+						users: usernames
+						// avatars: avatars
 					});
 				}
 
@@ -118,7 +118,7 @@ module.exports = function(app,io){
 				boolean: true,
 				room: this.room,
 				user: this.username,
-				avatar: this.avatar
+				// avatar: this.avatar
 			});
 
 			// leave the room
@@ -130,7 +130,7 @@ module.exports = function(app,io){
 		socket.on('msg', function(data){
 
 			// When the server receives a message, it sends it to the other person in the room.
-			socket.broadcast.to(socket.room).emit('receive', {msg: data.msg, user: data.user, img: data.img});
+			socket.broadcast.to(socket.room).emit('receive', {msg: data.msg, user: data.user});  //img: data.img
 		});
 	});
 };

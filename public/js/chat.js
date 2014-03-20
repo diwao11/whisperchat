@@ -10,7 +10,7 @@ $(function(){
 
 	// variables which hold the data for each person
 	var name = "",
-		email = "",
+		// email = "",
 		img = "",
 		friend = "";
 
@@ -31,9 +31,9 @@ $(function(){
 		leftNickname = $(".nickname-left"),
 		loginForm = $(".loginForm"),
 		yourName = $("#yourName"),
-		yourEmail = $("#yourEmail"),
+		// yourEmail = $("#yourEmail"),
 		hisName = $("#hisName"),
-		hisEmail = $("#hisEmail"),
+		// hisEmail = $("#hisEmail"),
 		chatForm = $("#chatform"),
 		textarea = $("#message"),
 		messageTimeSent = $(".timesent"),
@@ -64,7 +64,7 @@ $(function(){
 			showMessage("connected");
 
 			loginForm.on('submit', function(e){
-
+	alert('fuck me');
 				e.preventDefault();
 
 				name = $.trim(yourName.val());
@@ -74,18 +74,18 @@ $(function(){
 					return;
 				}
 
-				email = yourEmail.val();
+				// email = yourEmail.val();
 
-				if(!isValid(email)) {
-					alert("Please enter a valid email!");
-				}
-				else {
+				// if(!isValid(email)) {
+				// 	alert("Please enter a valid email!");
+				// }
+				// else {
 
 					showMessage("inviteSomebody");
 
 					// call the server-side function 'login' and send user's parameters
-					socket.emit('login', {user: name, avatar: email, id: id});
-				}
+					socket.emit('login', {user: name, id: id}); //avatar: email
+				// }
 			
 			});
 		}
@@ -109,15 +109,15 @@ $(function(){
 					alert("There already is a \"" + name + "\" in this room!");
 					return;
 				}
-				email = hisEmail.val();
+				// email = hisEmail.val();
 
-				if(!isValid(email)){
-					alert("Wrong e-mail format!");
-				}
-				else{
+				// if(!isValid(email)){
+				// 	alert("Wrong e-mail format!");
+				// }
+				// else{
 
-					socket.emit('login', {user: name, avatar: email, id: id});
-				}
+					socket.emit('login', {user: name, id: id});   //avatar: email,
+				// }
 
 			});
 		}
@@ -230,8 +230,6 @@ $(function(){
 		var li = $(
 			'<li class=' + who + '>'+
 				'<div class="image">' +
-					'<img src=' + imgg + ' />' +
-					'<b></b>' +
 					'<i class="timesent" data-time=' + now + '></i> ' +
 				'</div>' +
 				'<p></p>' +
@@ -255,11 +253,11 @@ $(function(){
 		$("html, body").animate({ scrollTop: $(document).height()-$(window).height() },1000);
 	}
 
-	function isValid(thatemail) {
+	// function isValid(thatemail) {
 
-		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		return re.test(thatemail);
-	}
+	// 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	// 	return re.test(thatemail);
+	// }
 
 	function showMessage(status,data){
 
