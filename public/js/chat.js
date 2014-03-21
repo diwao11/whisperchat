@@ -96,26 +96,13 @@ $(function(){
 					alert("There already is a \"" + name + "\" in this room!");
 					return;
 				}
-				// email = hisEmail.val();
-
-				// if(!isValid(email)){
-				// 	alert("Wrong e-mail format!");
-				// }
-				// else{
-
-					socket.emit('login', {user: name, id: id});   //avatar: email,
-				// }
-
+					socket.emit('login', {user: name, id: id});  
 			});
 		}
-
 		else {
 			showMessage("tooManyPeople");
 		}
-
 	});
-
-	// Other useful 
 
 	socket.on('startChat', function(data){
 		if(data.boolean && data.id == id) {
@@ -157,7 +144,7 @@ $(function(){
 
 			showMessage('chatStarted');
 
-			createChatMessage(data.msg, data.user, data.img, moment());
+			createChatMessage(data.msg, data.user, moment());
 			scrollToBottom();
 	});
 
@@ -190,20 +177,9 @@ $(function(){
 		textarea.val("");
 	});
 
-	// Update the relative time stamps on the chat messages every minute
-
-	setInterval(function(){
-
-		messageTimeSent.each(function(){
-			var each = moment($(this).data('time'));
-			$(this).text(each.fromNow());
-		});
-
-	},60000);
-
 	// Function that creates a new chat message
 
-	function createChatMessage(msg,user,imgg,now){
+	function createChatMessage(msg,user,now){
 
 		var who = '';
 
@@ -216,9 +192,7 @@ $(function(){
 
 		var li = $(
 			'<li class=' + who + '>'+
-				'<div class="image">' +
-					'<i class="timesent" data-time=' + now + '></i> ' +
-				'</div>' +
+				 '<b></b>' +
 				'<p></p>' +
 			'</li>');
 
@@ -230,10 +204,6 @@ $(function(){
 					.children(':last')
     			.delay(7000)
     			.fadeOut('slow');
-		
-
-		// messageTimeSent = $(".timesent");
-		// messageTimeSent.last().text(now.fromNow());
 	}
 
 	function scrollToBottom(){
@@ -264,7 +234,6 @@ $(function(){
 			personInside.fadeIn(1200);
 
 			chatNickname.text(data.user);
-			// ownerImage.attr("src",data.avatar);
 		}
 
 		else if(status === "youStartedChatWithNoMessages") {
@@ -277,7 +246,6 @@ $(function(){
 			});
 
 			friend = data.users[1];
-			// noMessagesImage.attr("src",data.avatars[1]);
 		}
 
 		else if(status === "heStartedChatWithNoMessages") {
@@ -288,7 +256,6 @@ $(function(){
 			});
 
 			friend = data.users[0];
-			// noMessagesImage.attr("src",data.avatars[0]);
 		}
 
 		else if(status === "chatStarted"){
