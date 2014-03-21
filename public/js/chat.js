@@ -1,7 +1,5 @@
-// This file is executed in the browser, when people visit /chat/<random id>
-
 $(function(){
-
+	
 	// getting the id of the room from the url
 	var id = Number(window.location.pathname.match(/\/chat\/(\d+)$/)[1]);
 
@@ -10,8 +8,6 @@ $(function(){
 
 	// variables which hold the data for each person
 	var name = "",
-		// email = "",
-		img = "",
 		friend = "";
 
 	// cache some jQuery objects
@@ -39,22 +35,13 @@ $(function(){
 		messageTimeSent = $(".timesent"),
 		chats = $(".chats");
 
-	// these variables hold images
-	var ownerImage = $("#ownerImage"),
-		leftImage = $("#leftImage"),
-		noMessagesImage = $("#noMessagesImage");
-
-
 	// on connection to server get the id of person's room
 	socket.on('connect', function(){
 
 		socket.emit('load', id);
 	});
 
-	// save the gravatar url
-	socket.on('img', function(data){
-		img = data;
-	});
+	
 
 	// receive the names and avatars of all people in the chat room
 	socket.on('peopleinchat', function(data){
@@ -64,7 +51,7 @@ $(function(){
 			showMessage("connected");
 
 			loginForm.on('submit', function(e){
-	alert('fuck me');
+	
 				e.preventDefault();
 
 				name = $.trim(yourName.val());
@@ -193,11 +180,11 @@ $(function(){
 
 		showMessage("chatStarted");
 
-		createChatMessage(textarea.val(), name, img, moment());
+		createChatMessage(textarea.val(), name, moment());
 		scrollToBottom();
 
 		// Send the message to the other person in the chat
-		socket.emit('msg', {msg: textarea.val(), user: name, img: img});
+		socket.emit('msg', {msg: textarea.val(), user: name});
 
 		// Empty the textarea
 		textarea.val("");
@@ -245,19 +232,13 @@ $(function(){
     			.fadeOut('slow');
 		
 
-		messageTimeSent = $(".timesent");
-		messageTimeSent.last().text(now.fromNow());
+		// messageTimeSent = $(".timesent");
+		// messageTimeSent.last().text(now.fromNow());
 	}
 
 	function scrollToBottom(){
 		$("html, body").animate({ scrollTop: $(document).height()-$(window).height() },1000);
 	}
-
-	// function isValid(thatemail) {
-
-	// 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	// 	return re.test(thatemail);
-	// }
 
 	function showMessage(status,data){
 
@@ -283,7 +264,7 @@ $(function(){
 			personInside.fadeIn(1200);
 
 			chatNickname.text(data.user);
-			ownerImage.attr("src",data.avatar);
+			// ownerImage.attr("src",data.avatar);
 		}
 
 		else if(status === "youStartedChatWithNoMessages") {
@@ -296,7 +277,7 @@ $(function(){
 			});
 
 			friend = data.users[1];
-			noMessagesImage.attr("src",data.avatars[1]);
+			// noMessagesImage.attr("src",data.avatars[1]);
 		}
 
 		else if(status === "heStartedChatWithNoMessages") {
@@ -307,7 +288,7 @@ $(function(){
 			});
 
 			friend = data.users[0];
-			noMessagesImage.attr("src",data.avatars[0]);
+			// noMessagesImage.attr("src",data.avatars[0]);
 		}
 
 		else if(status === "chatStarted"){
