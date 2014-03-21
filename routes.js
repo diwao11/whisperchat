@@ -1,3 +1,16 @@
+var express = require('express'),
+app = express(),
+port = process.env.PORT || 8080,
+mongoose = require('mongoose'),
+MongoStore = require('connect-mongo')(express),
+ioSession = require('socket.io-session')
+
+var sessionKey = 'secret key'
+var memoryStore = new MongoStore({ db: 'mongodb', url: 'mongodb://localhost/whisperchat' });
+
+app.use(express.cookieParser());
+app.use(express.session({ secret: sessionKey, store: memoryStore }));
+
 module.exports = function(app,io){
 	app.get('/', function(req, res){
 		res.render('home');
@@ -10,8 +23,13 @@ module.exports = function(app,io){
 		res.render('chat');
 	});
 
+	io.set('authorization', ioSession(express.cookieParser(sessionKey), memoryStore));
+
 	// Initialize a new socket.io application, named 'chat'
 	var chat = io.of('/socket').on('connection', function (socket) {
+
+		console.log(socket.handshake.session);
+
 		socket.on('load',function(data){
 			if(chat.clients(data).length === 0 ) {
 				socket.emit('peopleinchat', {number: 0});
